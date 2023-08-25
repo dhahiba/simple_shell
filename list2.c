@@ -22,35 +22,32 @@ size_t list_len(const link_l *h)
  */
 char **list_to_strings(link_l *h)
 {
-char *s;
-char **ss;
-link_l *n = h;
-size_t i, j;
+	char *s;
+	char **ss;
+	link_l *n = h;
+	size_t i, j;
 
-i = list_len(h);
-if (!h || !i)
-return (NULL);
-ss = malloc(sizeof(char *) * (i + 1));
-if (!ss)
-return (NULL);
-i = 0;
-while (n)
-{
-s = malloc(_strlen(n->s) + 1);
-if (!s)
-{
-for (j = 0; j < i; j++)
-free(ss[j]);
-free(ss);
-return (NULL);
-}
-s = _strcpy(s, n->s);
-ss[i] = s;
-n = n->next;
-i++;
-}
-ss[i] = NULL;
-return (ss);
+	i = list_len(h);
+	if (!h || !i)
+		return (NULL);
+	ss = malloc(sizeof(char *) * (i + 1));
+	if (!ss)
+		return (NULL);
+	for (i = 0; n; i++, n = n->next)
+	{
+		s = malloc(_strlen(n->s) + 1);
+		if (!s)
+		{
+			for (j = 0; j < i; j++)
+				free(ss[j]);
+			free(ss);
+			return (NULL);
+		}
+		s = _strcpy(s, n->s);
+		ss[i] = s;
+	}
+	ss[i] = NULL;
+	return (ss);
 }
 /**
  * print_listint - ...
@@ -59,19 +56,19 @@ return (ss);
  */
 size_t print_listint(const link_l *h)
 {
-size_t s = 0;
+	size_t s = 0;
 
-while (h)
-{
-_puts(convert_number(h->n, 10, 0));
-_putchar(':');
-_putchar(' ');
-_puts(h->s ? h->s : "(nil)");
-_puts("\n");
-h = h->next;
-s++;
-}
-return (s);
+	while (h)
+	{
+		_puts(convert_number(h->n, 10, 0));
+		_putchar(':');
+		_putchar(' ');
+		_puts(h->s ? h->s : "(nil)");
+		_puts("\n");
+		h = h->next;
+		s++;
+	}
+	return (s);
 }
 /**
  * node_starts_with - ...
@@ -82,16 +79,16 @@ return (s);
  */
 link_l *node_starts_with(link_l *node, char *pr, char c)
 {
-char *p = NULL;
+	char *p = NULL;
 
-while (node)
-{
-p = starts_with(node->s, pr);
-if (p && ((c == -1) || (*p == c)))
-return (node);
-node = node->next;
-}
-return (NULL);
+	while (node)
+	{
+		p = starts_with(node->s, pr);
+		if (p && ((c == -1) || (*p == c)))
+			return (node);
+		node = node->next;
+	}
+	return (NULL);
 }
 /**
  * get_node_index - ...
